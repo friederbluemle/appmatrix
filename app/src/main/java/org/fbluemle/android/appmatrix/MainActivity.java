@@ -61,7 +61,7 @@ public class MainActivity extends ActionBarActivity {
 
         for (ApplicationInfo packageInfo : packages) {
             Log.d(TAG, "Installed package :" + packageInfo.packageName);
-            packagesStr.add(packageInfo.packageName);
+            packagesStr.add(packageInfo.packageName + " (" + packageInfo.targetSdkVersion + ")");
             Log.d(TAG, "Source dir : " + packageInfo.sourceDir);
             Log.d(TAG, "Launch Activity :" + pm.getLaunchIntentForPackage(packageInfo.packageName));
         }
