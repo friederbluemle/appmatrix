@@ -1,4 +1,4 @@
-package org.fbluemle.android.appmatrix;
+package org.fbluemle.android.appmatrix.activities;
 
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.fbluemle.android.appmatrix.R;
 import org.fbluemle.android.appmatrix.adapters.AppAdapter;
 
 import java.util.ArrayList;

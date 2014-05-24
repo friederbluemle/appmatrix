@@ -1,4 +1,4 @@
-package org.fbluemle.android.appmatrix;
+package org.fbluemle.android.appmatrix.activities;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -17,6 +17,8 @@ import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
 
+
+import org.fbluemle.android.appmatrix.R;
 
 import java.util.List;
 
