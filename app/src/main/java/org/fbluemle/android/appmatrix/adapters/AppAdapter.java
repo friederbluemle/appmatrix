@@ -10,9 +10,6 @@ import android.widget.TextView;
 
 import org.fbluemle.android.appmatrix.R;
 
-/**
- * Created by Frieder on 3/25/2014.
- */
 public class AppAdapter extends ArrayAdapter<String> {
     private final Context context;
     private final String[] values;
@@ -39,13 +36,13 @@ public class AppAdapter extends ArrayAdapter<String> {
         System.out.println(s);
 
         if (s.equals("WindowsMobile")) {
-            imageView.setImageResource(R.drawable.ic_launcher);
+            imageView.setImageResource(R.mipmap.ic_launcher);
         } else if (s.equals("iOS")) {
-            imageView.setImageResource(R.drawable.ic_launcher);
+            imageView.setImageResource(R.mipmap.ic_launcher);
         } else if (s.equals("Blackberry")) {
-            imageView.setImageResource(R.drawable.ic_launcher);
+            imageView.setImageResource(R.mipmap.ic_launcher);
         } else {
-            imageView.setImageResource(R.drawable.ic_launcher);
+            imageView.setImageResource(R.mipmap.ic_launcher);
         }
 
         return rowView;
