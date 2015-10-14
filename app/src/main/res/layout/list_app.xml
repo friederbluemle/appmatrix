@@ -7,7 +7,7 @@
     android:padding="5dp">
 
     <ImageView
-        android:id="@+id/logo"
+        android:id="@+id/icon"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginLeft="3dp"
@@ -20,17 +20,17 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/packageName"
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp">
         </TextView>
 
         <TextView
-            android:id="@+id/versionInfo"
+            android:id="@+id/subTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp">
+            android:textSize="10sp">
         </TextView>
     </LinearLayout>
 </LinearLayout>

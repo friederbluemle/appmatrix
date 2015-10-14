@@ -31,14 +31,15 @@ public class MainActivity extends AppCompatActivity {
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     public static class Package {
+        public String label;
         public String packageName;
         public String versionName;
         public int versionCode;
         public int targetSdkVersion;
         public Drawable icon;
 
-        public Package(String packageName) {
-            this.packageName = packageName;
+        public Package(String label) {
+            this.label = label;
         }
     }
 
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                                     int position, long id) {
                 // When clicked, show a toast with the TextView text
                 Toast.makeText(getApplicationContext(),
-                        ((TextView) view.findViewById(R.id.packageName)).getText(), Toast.LENGTH_SHORT).show();
+                        ((TextView) view.findViewById(R.id.title)).getText(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -98,7 +99,10 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "Installed package: " + appInfo.packageName);
             Log.d(TAG, "Source dir: " + appInfo.sourceDir);
             Log.d(TAG, "Launch Activity: " + pm.getLaunchIntentForPackage(appInfo.packageName));
-            Package p = new Package(appInfo.packageName);
+            Package p = new Package((String) appInfo.loadLabel(pm));
+            p.packageName = appInfo.packageName;
+            p.targetSdkVersion = appInfo.targetSdkVersion;
+            p.icon = appInfo.loadIcon(pm);
             try {
                 PackageInfo pi = pm.getPackageInfo(appInfo.packageName, 0);
                 p.versionCode = pi.versionCode;
@@ -106,8 +110,6 @@ public class MainActivity extends AppCompatActivity {
             } catch (PackageManager.NameNotFoundException e) {
                 Log.e(TAG, "Unable to get packageInfo for " + appInfo.packageName);
             }
-            p.targetSdkVersion = appInfo.targetSdkVersion;
-            p.icon = appInfo.loadIcon(pm);
             packages.add(p);
         }
         return packages;
