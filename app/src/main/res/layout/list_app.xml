@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="5dp" >
+    android:padding="5dp">
 
     <ImageView
         android:id="@+id/logo"
@@ -12,14 +12,13 @@
         android:layout_marginLeft="3dp"
         android:layout_marginRight="14dp"
         android:layout_marginTop="3dp"
-        android:src="@android:drawable/alert_dark_frame" >
+        android:src="@android:drawable/alert_dark_frame">
     </ImageView>
 
     <TextView
         android:id="@+id/label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="12sp" >
+        android:textSize="12sp">
     </TextView>
-
 </LinearLayout>

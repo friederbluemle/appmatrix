@@ -1,5 +1,7 @@
 package org.fbluemle.android.appmatrix.activities;
 
+import org.fbluemle.android.appmatrix.R;
+
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -16,9 +18,6 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
-
-
-import org.fbluemle.android.appmatrix.R;
 
 import java.util.List;
 
@@ -41,7 +40,6 @@ public class SettingsActivity extends PreferenceActivity {
      * shown on tablets.
      */
     private static final boolean ALWAYS_SIMPLE_PREFS = false;
-
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {

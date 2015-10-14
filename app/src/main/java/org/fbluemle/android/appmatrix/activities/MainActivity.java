@@ -1,10 +1,13 @@
 package org.fbluemle.android.appmatrix.activities;
 
+import org.fbluemle.android.appmatrix.R;
+import org.fbluemle.android.appmatrix.adapters.AppAdapter;
+
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,15 +18,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.fbluemle.android.appmatrix.R;
-import org.fbluemle.android.appmatrix.adapters.AppAdapter;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     protected ListAdapter mAdapter;
@@ -54,10 +53,9 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private String[] getPackages() {
-        List<String> packagesStr = new ArrayList<String>();
+        List<String> packagesStr = new ArrayList<>();
 
-        final PackageManager pm = getPackageManager();
-//get a list of installed apps.
+        PackageManager pm = getPackageManager();
         List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 
         for (ApplicationInfo packageInfo : packages) {
@@ -69,10 +67,8 @@ public class MainActivity extends ActionBarActivity {
         return Arrays.copyOf(packagesStr.toArray(), packagesStr.size(), String[].class);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
@@ -92,5 +88,4 @@ public class MainActivity extends ActionBarActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

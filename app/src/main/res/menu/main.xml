@@ -1,16 +1,19 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="org.fbluemle.android.appmatrix.activities.MainActivity" >
+    tools:context="org.fbluemle.android.appmatrix.activities.MainActivity">
 
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
+    <item
+        android:id="@+id/action_settings"
         android:orderInCategory="100"
-        app:showAsAction="never" />
+        android:title="@string/action_settings"
+        app:showAsAction="never"/>
 
-    <item android:id="@+id/action_refresh"
-        android:title="@string/action_refresh"
+    <item
+        android:id="@+id/action_refresh"
         android:icon="@android:drawable/ic_menu_rotate"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom" />
+        android:title="@string/action_refresh"
+        app:showAsAction="ifRoom"/>
 </menu>
