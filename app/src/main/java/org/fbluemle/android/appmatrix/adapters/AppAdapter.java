@@ -32,13 +32,22 @@ public class AppAdapter extends ArrayAdapter<MainActivity.Package> {
 
         View rowView = inflater.inflate(R.layout.list_app, parent, false);
 
-        TextView textView = (TextView) rowView.findViewById(R.id.packageName);
-        textView.setText(String.format("%s%s",
+        TextView packageName = (TextView) rowView.findViewById(R.id.packageName);
+        packageName.setText(String.format("%s%s",
                 current.packageName,
                 current.targetSdkVersion != 0 ? (" (" + current.targetSdkVersion + ")") : ""));
 
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.logo);
-        imageView.setImageResource(R.mipmap.ic_launcher);
+        if (current.versionCode != 0) {
+            TextView versionInfo = (TextView) rowView.findViewById(R.id.versionInfo);
+            versionInfo.setText(String.format("%s (%s)", current.versionName, current.versionCode));
+        }
+
+        ImageView logo = (ImageView) rowView.findViewById(R.id.logo);
+        if (current.icon != null) {
+            logo.setBackground(current.icon);
+        } else {
+            logo.setImageResource(R.mipmap.ic_launcher);
+        }
 
         return rowView;
     }

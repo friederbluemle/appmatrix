@@ -5,6 +5,7 @@ import org.fbluemle.android.appmatrix.adapters.AppAdapter;
 
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     public static class Package {
         public String packageName;
         public String versionName;
-        public String versionCode;
+        public int versionCode;
         public int targetSdkVersion;
         public Drawable icon;
 
@@ -98,7 +99,15 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "Source dir: " + appInfo.sourceDir);
             Log.d(TAG, "Launch Activity: " + pm.getLaunchIntentForPackage(appInfo.packageName));
             Package p = new Package(appInfo.packageName);
+            try {
+                PackageInfo pi = pm.getPackageInfo(appInfo.packageName, 0);
+                p.versionCode = pi.versionCode;
+                p.versionName = pi.versionName;
+            } catch (PackageManager.NameNotFoundException e) {
+                Log.e(TAG, "Unable to get packageInfo for " + appInfo.packageName);
+            }
             p.targetSdkVersion = appInfo.targetSdkVersion;
+            p.icon = appInfo.loadIcon(pm);
             packages.add(p);
         }
         return packages;
