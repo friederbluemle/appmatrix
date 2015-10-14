@@ -6,6 +6,7 @@ import org.fbluemle.android.appmatrix.adapters.AppAdapter;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,24 +14,46 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    protected ListAdapter mAdapter;
     protected ListView mList;
 
-    static final String[] FRUITS = new String[]{"Apple", "Avocado", "Banana",
-            "Blueberry", "Coconut", "Durian", "Guava", "Kiwifruit",
-            "Jackfruit", "Mango", "Olive", "Pear", "Sugar-apple"};
+    public static class Package {
+        public String packageName;
+        public String versionName;
+        public String versionCode;
+        public int targetSdkVersion;
+        public Drawable icon;
+
+        public Package(String packageName) {
+            this.packageName = packageName;
+        }
+    }
+
+    private static final List<Package> PACKAGES = new ArrayList<>();
+    static {
+        PACKAGES.add(new Package("Apple"));
+        PACKAGES.add(new Package("Avocado"));
+        PACKAGES.add(new Package("Banana"));
+        PACKAGES.add(new Package("Blueberry"));
+        PACKAGES.add(new Package("Coconut"));
+        PACKAGES.add(new Package("Durian"));
+        PACKAGES.add(new Package("Guava"));
+        PACKAGES.add(new Package("Kiwifruit"));
+        PACKAGES.add(new Package("Jackfruit"));
+        PACKAGES.add(new Package("Mango"));
+        PACKAGES.add(new Package("Olive"));
+        PACKAGES.add(new Package("Pear"));
+        PACKAGES.add(new Package("Sugar-apple"));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mList = (ListView) findViewById(R.id.listView);
-        mList.setAdapter(new AppAdapter(this, FRUITS));
+        mList.setAdapter(new AppAdapter(this, PACKAGES));
 
         mList.setTextFilterEnabled(true);
 
@@ -47,24 +70,26 @@ public class MainActivity extends AppCompatActivity {
                                     int position, long id) {
                 // When clicked, show a toast with the TextView text
                 Toast.makeText(getApplicationContext(),
-                        ((TextView) view.findViewById(R.id.label)).getText(), Toast.LENGTH_SHORT).show();
+                        ((TextView) view.findViewById(R.id.packageName)).getText(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private String[] getPackages() {
-        List<String> packagesStr = new ArrayList<>();
+    private List<Package> getPackages() {
+        List<Package> packages = new ArrayList<>();
 
         PackageManager pm = getPackageManager();
-        List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+        List<ApplicationInfo> appInfos = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 
-        for (ApplicationInfo packageInfo : packages) {
-            Log.d(TAG, "Installed package :" + packageInfo.packageName);
-            packagesStr.add(packageInfo.packageName + " (" + packageInfo.targetSdkVersion + ")");
-            Log.d(TAG, "Source dir : " + packageInfo.sourceDir);
-            Log.d(TAG, "Launch Activity :" + pm.getLaunchIntentForPackage(packageInfo.packageName));
+        for (ApplicationInfo appInfo : appInfos) {
+            Log.d(TAG, "Installed package: " + appInfo.packageName);
+            Log.d(TAG, "Source dir: " + appInfo.sourceDir);
+            Log.d(TAG, "Launch Activity: " + pm.getLaunchIntentForPackage(appInfo.packageName));
+            Package p = new Package(appInfo.packageName);
+            p.targetSdkVersion = appInfo.targetSdkVersion;
+            packages.add(p);
         }
-        return Arrays.copyOf(packagesStr.toArray(), packagesStr.size(), String[].class);
+        return packages;
     }
 
     @Override

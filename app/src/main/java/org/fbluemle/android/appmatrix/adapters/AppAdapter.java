@@ -1,6 +1,7 @@
 package org.fbluemle.android.appmatrix.adapters;
 
 import org.fbluemle.android.appmatrix.R;
+import org.fbluemle.android.appmatrix.activities.MainActivity;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,14 +11,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class AppAdapter extends ArrayAdapter<String> {
-    private final Context mContext;
-    private final String[] mValues;
+import java.util.List;
 
-    public AppAdapter(Context context, String[] values) {
-        super(context, R.layout.list_app, values);
+public class AppAdapter extends ArrayAdapter<MainActivity.Package> {
+    private final Context mContext;
+    private final List<MainActivity.Package> mPackages;
+
+    public AppAdapter(Context context, List<MainActivity.Package> packages) {
+        super(context, R.layout.list_app, packages);
         mContext = context;
-        mValues = values;
+        mPackages = packages;
     }
 
     @Override
@@ -25,25 +28,17 @@ public class AppAdapter extends ArrayAdapter<String> {
         LayoutInflater inflater = (LayoutInflater) mContext
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+        MainActivity.Package current = mPackages.get(position);
+
         View rowView = inflater.inflate(R.layout.list_app, parent, false);
-        TextView textView = (TextView) rowView.findViewById(R.id.label);
+
+        TextView textView = (TextView) rowView.findViewById(R.id.packageName);
+        textView.setText(String.format("%s%s",
+                current.packageName,
+                current.targetSdkVersion != 0 ? (" (" + current.targetSdkVersion + ")") : ""));
+
         ImageView imageView = (ImageView) rowView.findViewById(R.id.logo);
-        textView.setText(mValues[position]);
-
-        // Change icon based on name
-        String s = mValues[position];
-
-        System.out.println(s);
-
-        if (s.equals("WindowsMobile")) {
-            imageView.setImageResource(R.mipmap.ic_launcher);
-        } else if (s.equals("iOS")) {
-            imageView.setImageResource(R.mipmap.ic_launcher);
-        } else if (s.equals("Blackberry")) {
-            imageView.setImageResource(R.mipmap.ic_launcher);
-        } else {
-            imageView.setImageResource(R.mipmap.ic_launcher);
-        }
+        imageView.setImageResource(R.mipmap.ic_launcher);
 
         return rowView;
     }
