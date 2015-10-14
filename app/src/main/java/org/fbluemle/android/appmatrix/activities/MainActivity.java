@@ -8,6 +8,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -25,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     protected ListView mList;
+
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     public static class Package {
         public String packageName;
@@ -59,6 +62,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mList.setAdapter(new AppAdapter(MainActivity.this, getPackages()));
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         mList = (ListView) findViewById(R.id.listView);
         mList.setAdapter(new AppAdapter(this, PACKAGES));
@@ -108,8 +120,6 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
-        } else if (id == R.id.action_refresh) {
-            mList.setAdapter(new AppAdapter(this, getPackages()));
         }
         return super.onOptionsItemSelected(item);
     }
