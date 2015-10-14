@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                                     int position, long id) {
                 // When clicked, show a toast with the TextView text
                 Toast.makeText(getApplicationContext(),
-                        ((TextView) view).getText(), Toast.LENGTH_SHORT).show();
+                        ((TextView) view.findViewById(R.id.label)).getText(), Toast.LENGTH_SHORT).show();
             }
         });
     }
