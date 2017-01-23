@@ -24,9 +24,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = "MainActivity";
 
     protected ListView mList;
+    private boolean mIncludeSystemApps;
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -79,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
             List<ApplicationInfo> appInfos = pm.getInstalledApplications(params[0]);
 
             for (ApplicationInfo appInfo : appInfos) {
+                if (!mIncludeSystemApps && (appInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 1) {
+                    continue;
+                }
                 AppInfo p = new AppInfo((String) appInfo.loadLabel(pm));
                 p.packageName = appInfo.packageName;
                 p.targetSdkVersion = appInfo.targetSdkVersion;
@@ -119,6 +123,10 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
+        } else if (id == R.id.action_show_system_apps) {
+            item.setChecked(!item.isChecked());
+            mIncludeSystemApps = item.isChecked();
+            refreshAppInfoList();
         }
         return super.onOptionsItemSelected(item);
     }
