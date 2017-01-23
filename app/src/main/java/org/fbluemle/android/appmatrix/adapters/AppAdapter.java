@@ -1,7 +1,7 @@
 package org.fbluemle.android.appmatrix.adapters;
 
 import org.fbluemle.android.appmatrix.R;
-import org.fbluemle.android.appmatrix.activities.MainActivity;
+import org.fbluemle.android.appmatrix.models.AppInfo;
 
 import android.content.Context;
 import android.os.Build;
@@ -16,20 +16,20 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class AppAdapter extends ArrayAdapter<MainActivity.Package> {
+public class AppAdapter extends ArrayAdapter<AppInfo> {
     private final Context mContext;
-    private final List<MainActivity.Package> mPackages;
+    private final List<AppInfo> mApps;
 
-    public AppAdapter(Context context, List<MainActivity.Package> packages) {
-        super(context, R.layout.list_app, packages);
+    public AppAdapter(Context context, List<AppInfo> apps) {
+        super(context, R.layout.list_app, apps);
         mContext = context;
-        mPackages = packages;
+        mApps = apps;
     }
 
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-        MainActivity.Package current = mPackages.get(position);
+        AppInfo current = mApps.get(position);
 
         View view = convertView;
         if (view == null) {
@@ -44,14 +44,9 @@ public class AppAdapter extends ArrayAdapter<MainActivity.Package> {
         TextView title = (TextView) view.findViewById(R.id.title);
         title.setText(String.format("%s%s", current.label, versionInfo));
 
-        String targetInfo = "";
-        if (current.targetSdkVersion != 0) {
-            targetInfo = String.format(" (targetSdk: %s)", current.targetSdkVersion);
-        }
-
         if (!TextUtils.isEmpty(current.packageName)) {
             TextView subTitle = (TextView) view.findViewById(R.id.subTitle);
-            subTitle.setText(String.format("%s%s", current.packageName, targetInfo));
+            subTitle.setText(current.packageName);
         }
 
         ImageView logo = (ImageView) view.findViewById(R.id.icon);
