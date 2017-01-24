@@ -10,6 +10,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -115,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(appInfos);
             mList.setAdapter(new AppAdapter(MainActivity.this, appInfos));
             mSwipeRefreshLayout.setRefreshing(false);
+            Snackbar.make(mList, appInfos.size() + " applications loaded", Snackbar.LENGTH_SHORT)
+                    .show();
         }
     }
 
