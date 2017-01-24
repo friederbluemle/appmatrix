@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -74,29 +75,30 @@ public class MainActivity extends AppCompatActivity {
     private class LoadAppInfoTask extends AsyncTask<Integer, Integer, List<AppInfo>> {
         @Override
         protected List<AppInfo> doInBackground(Integer... params) {
-            List<AppInfo> packages = new ArrayList<>();
+            List<AppInfo> apps = new ArrayList<>();
 
             PackageManager pm = getPackageManager();
             List<ApplicationInfo> appInfos = pm.getInstalledApplications(params[0]);
+            Collections.sort(appInfos, new ApplicationInfo.DisplayNameComparator(pm));
 
             for (ApplicationInfo appInfo : appInfos) {
                 if (!mIncludeSystemApps && (appInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 1) {
                     continue;
                 }
-                AppInfo p = new AppInfo((String) appInfo.loadLabel(pm));
-                p.packageName = appInfo.packageName;
-                p.targetSdkVersion = appInfo.targetSdkVersion;
-                p.icon = appInfo.loadIcon(pm);
+                AppInfo app = new AppInfo((String) appInfo.loadLabel(pm));
+                app.packageName = appInfo.packageName;
+                app.targetSdkVersion = appInfo.targetSdkVersion;
+                app.icon = appInfo.loadIcon(pm);
                 try {
                     PackageInfo pi = pm.getPackageInfo(appInfo.packageName, 0);
-                    p.versionCode = pi.versionCode;
-                    p.versionName = pi.versionName;
+                    app.versionCode = pi.versionCode;
+                    app.versionName = pi.versionName;
                 } catch (PackageManager.NameNotFoundException e) {
                     Log.e(TAG, "Unable to get packageInfo for " + appInfo.packageName);
                 }
-                packages.add(p);
+                apps.add(app);
             }
-            return packages;
+            return apps;
         }
 
         @Override
