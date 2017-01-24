@@ -77,6 +77,12 @@ public class MainActivity extends AppCompatActivity {
 
     private class LoadAppInfoTask extends AsyncTask<Integer, Integer, List<AppInfo>> {
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mSwipeRefreshLayout.setRefreshing(true);
+        }
+
+        @Override
         protected List<AppInfo> doInBackground(Integer... params) {
             List<AppInfo> apps = new ArrayList<>();
 
