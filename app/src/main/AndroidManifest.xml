@@ -5,8 +5,6 @@
     package="org.fbluemle.android.appmatrix"
     >
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-
     <application
         android:allowBackup="true"
         android:fullBackupContent="true"
