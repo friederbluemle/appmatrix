@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 
+archivesBaseName = 'appmatrix'
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -7,13 +9,53 @@ android {
         applicationId "org.fbluemle.android.appmatrix"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode semverGitVersion.versionCode
+        versionName semverGitVersion.versionName
+    }
+    def androidUserHomeDir = "${System.properties['user.home']}${File.separator}.android"
+    signingConfigs {
+        release {
+            if (rootProject.file('release.properties').exists()) {
+                def props = new Properties()
+                props.load(rootProject.file('release.properties').newDataInputStream())
+                release {
+                    storeFile "${androidUserHomeDir}${File.separator}${props.storeFile}" as File
+                    storePassword props.storePassword
+                    keyAlias props.keyAlias
+                    keyPassword props.keyPassword
+                }
+            }
+        }
     }
     buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+        }
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (rootProject.file('release.properties').exists()) {
+                signingConfig signingConfigs.release
+            }
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.outputFile = new File(
+                    output.outputFile.parent,
+                    output.outputFile.name.replace(".apk", "-${version}.apk"))
+        }
+        if (variant.getBuildType().isMinifyEnabled()) {
+            variant.assemble.doLast {
+                copy {
+                    from variant.mappingFile
+                    into variant.mappingFile.parent
+                    rename { String fileName ->
+                        "mapping-${variant.name}-${version}.txt"
+                    }
+                }
+            }
         }
     }
 }

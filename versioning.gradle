@@ -1,0 +1,52 @@
+class SemverGitVersion {
+    Integer major = 0, minor = 0, patch = 0, commits = 0
+    Boolean dirty = true
+
+    static def init(buildId) {
+        def version = new SemverGitVersion()
+        def matcher = buildId =~ /v?(\d+)\.(\d+)\.?(\d+)?-?(\d+)?(.*dirty$)?/
+        if (matcher) {
+            matcher.each {
+                match, major, minor, patch, commits, dirty ->
+                    version.major = major.toInteger()
+                    version.minor = minor.toInteger()
+                    version.patch = patch != null ? patch.toInteger() : 0
+                    version.commits = commits != null ? commits.toInteger() : 0
+                    version.dirty = dirty != null
+            }
+        }
+        version
+    }
+
+    def boolean isOnCleanTag() {
+        return commits == 0 && !dirty
+    }
+
+    def String getVersion() {
+        if (isOnCleanTag()) {
+            String.format('%d.%d.%d', major, minor, patch)
+        } else {
+            String.format('%d.%d.%d-SNAPSHOT', major, minor, patch + 1)
+        }
+    }
+
+    def Integer getVersionCode() {
+        major * 100000000 + minor * 1000000 + patch * 10000
+    }
+
+    static def getBuildId() {
+        'git describe --tags --dirty'.execute().text.trim()
+    }
+
+    static def String getVersionName() {
+        getBuildId().replaceFirst(/^v/, '')
+    }
+
+    def String toString() {
+        String.format('%s (%d)', getVersionName(), getVersionCode())
+    }
+}
+
+ext.semverGitVersion = { ->
+    SemverGitVersion.init(SemverGitVersion.getBuildId())
+}

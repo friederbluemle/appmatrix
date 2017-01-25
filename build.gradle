@@ -16,3 +16,10 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+apply from: 'versioning.gradle'
+
+subprojects {
+    ext.semverGitVersion = semverGitVersion()
+    version = semverGitVersion.version
+}
