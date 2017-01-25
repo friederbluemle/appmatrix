@@ -134,9 +134,8 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
+        if (id == R.id.action_refresh) {
+            refreshAppInfoList();
         } else if (id == R.id.action_show_system_apps) {
             item.setChecked(!item.isChecked());
             mIncludeSystemApps = item.isChecked();
