@@ -1,5 +1,6 @@
 package org.fbluemle.android.appmatrix.activities;
 
+import org.fbluemle.android.appmatrix.BuildConfig;
 import org.fbluemle.android.appmatrix.R;
 import org.fbluemle.android.appmatrix.adapters.AppAdapter;
 import org.fbluemle.android.appmatrix.models.AppInfo;
@@ -12,14 +13,18 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -140,7 +145,23 @@ public class MainActivity extends AppCompatActivity {
             item.setChecked(!item.isChecked());
             mIncludeSystemApps = item.isChecked();
             refreshAppInfoList();
+        } else if (id == R.id.action_about) {
+            showAboutDialog();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showAboutDialog() {
+        View view = View.inflate(this, R.layout.about_dialog, null);
+        TextView text = (TextView) view.findViewById(R.id.aboutText);
+        text.setText(new SpannableString(getString(R.string.about_text, BuildConfig.VERSION_NAME)));
+        Linkify.addLinks(text, Linkify.ALL);
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.about_title, getString(R.string.app_name)))
+                .setCancelable(true)
+                .setIcon(R.mipmap.ic_launcher)
+                .setPositiveButton(android.R.string.ok, null)
+                .setView(view)
+                .show();
     }
 }
