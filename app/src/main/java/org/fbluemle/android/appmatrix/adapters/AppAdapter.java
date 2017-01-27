@@ -17,12 +17,12 @@ import android.widget.TextView;
 import java.util.List;
 
 public class AppAdapter extends ArrayAdapter<AppInfo> {
-    private final Context mContext;
+    private final LayoutInflater mLayoutInflater;
     private final List<AppInfo> mApps;
 
     public AppAdapter(Context context, List<AppInfo> apps) {
-        super(context, R.layout.list_app, apps);
-        mContext = context;
+        super(context, R.layout.app_list_item, apps);
+        mLayoutInflater = LayoutInflater.from(context);
         mApps = apps;
     }
 
@@ -33,7 +33,7 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
 
         View view = convertView;
         if (view == null) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.list_app, parent, false);
+            view = mLayoutInflater.inflate(R.layout.app_list_item, parent, false);
         }
 
         if (!TextUtils.isEmpty(current.versionName) && current.versionCode != 0) {
