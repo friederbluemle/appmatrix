@@ -3,6 +3,24 @@
 [![Build Status](https://travis-ci.org/friederbluemle/appmatrix.svg?branch=master)](https://travis-ci.org/friederbluemle/appmatrix)
 [![Coverage Status](https://coveralls.io/repos/github/friederbluemle/appmatrix/badge.svg?branch=master)](https://coveralls.io/github/friederbluemle/appmatrix?branch=master)
 
+![Feature Graphic](docs/feature-graphic.png)
+
+## Description
+
+A simple utility app that lists all your installed apps (optionally including system apps), with
+detailed version information.
+
+<a href='https://play.google.com/store/apps/details?id=org.fbluemle.android.appmatrix'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width='200'/></a>
+
+<img src="docs/screenshot01.png" width="320">
+<img src="docs/screenshot02.png" width="320">
+
+## Future plans
+
+The first version will only list local apps on the current device. The preliminary plan for version
+2 is to have a true app "matrix", i.e. an overview of all apps installed across multiple devices,
+synced to the user's Google account.
+
 ## License
 
     Copyright 2017 Frieder Bluemle
