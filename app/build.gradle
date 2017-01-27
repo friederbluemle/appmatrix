@@ -39,6 +39,10 @@ android {
             }
         }
     }
+    lintOptions {
+        textOutput 'stdout'
+        textReport true
+    }
 
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
