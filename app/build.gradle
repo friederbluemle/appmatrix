@@ -42,6 +42,7 @@ android {
     lintOptions {
         textOutput 'stdout'
         textReport true
+        warningsAsErrors true
     }
 
     applicationVariants.all { variant ->
