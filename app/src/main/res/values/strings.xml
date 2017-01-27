@@ -7,4 +7,5 @@
     <string name="action_about">About</string>
     <string name="about_title">About %1$s</string>
     <string name="about_text">Version %1$s\n\nQuestions &amp; Comments\nappmatrix@fbluemle.org\n\nThis app is free and open source\nhttps://github.com/friederbluemle/appmatrix</string>
+    <string name="app_icon">App Icon</string>
 </resources>

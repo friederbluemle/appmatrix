@@ -36,13 +36,12 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
             view = LayoutInflater.from(mContext).inflate(R.layout.list_app, parent, false);
         }
 
-        String versionInfo = "";
         if (!TextUtils.isEmpty(current.versionName) && current.versionCode != 0) {
-            versionInfo = String.format(" %s (%s)", current.versionName, current.versionCode);
+            String versionInfo = String.format("%s (%s)", current.versionName, current.versionCode);
+            ((TextView) view.findViewById(R.id.appVersion)).setText(versionInfo);
         }
 
-        TextView title = (TextView) view.findViewById(R.id.title);
-        title.setText(String.format("%s%s", current.label, versionInfo));
+        ((TextView) view.findViewById(R.id.title)).setText(current.label);
 
         if (!TextUtils.isEmpty(current.packageName)) {
             TextView subTitle = (TextView) view.findViewById(R.id.subTitle);
