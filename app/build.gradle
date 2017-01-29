@@ -12,14 +12,14 @@ android {
         versionCode semverGitVersion.versionCode
         versionName semverGitVersion.versionName
     }
-    def androidUserHomeDir = "${System.properties['user.home']}${File.separator}.android"
+    def releaseProps = rootProject.file('release.properties')
     signingConfigs {
         release {
-            if (rootProject.file('release.properties').exists()) {
+            if (releaseProps.exists()) {
                 def props = new Properties()
-                props.load(rootProject.file('release.properties').newDataInputStream())
+                props.load(releaseProps.newDataInputStream())
                 release {
-                    storeFile "${androidUserHomeDir}${File.separator}${props.storeFile}" as File
+                    storeFile props.storeFile as File
                     storePassword props.storePassword
                     keyAlias props.keyAlias
                     keyPassword props.keyPassword
@@ -30,11 +30,12 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
         }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            if (rootProject.file('release.properties').exists()) {
+            if (releaseProps.exists()) {
                 signingConfig signingConfigs.release
             }
         }

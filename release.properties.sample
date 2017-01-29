@@ -1,0 +1,4 @@
+storeFile=/path/to/appmatrix-release.keystore
+storePassword=
+keyAlias=appmatrix
+keyPassword=

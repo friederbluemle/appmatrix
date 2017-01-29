@@ -1,16 +1,14 @@
 # AppMatrix
 
-[![Build Status](https://travis-ci.org/friederbluemle/appmatrix.svg?branch=master)](https://travis-ci.org/friederbluemle/appmatrix)
-[![Coverage Status](https://coveralls.io/repos/github/friederbluemle/appmatrix/badge.svg?branch=master)](https://coveralls.io/github/friederbluemle/appmatrix?branch=master)
+[![Build Status][1]][2]
+[![Coverage Status][3]][4]
+
+<a href='https://play.google.com/store/apps/details?id=org.fbluemle.android.appmatrix'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width='200'/></a>
 
 ![Feature Graphic](docs/feature-graphic.png)
 
-## Description
-
 A simple utility app that lists all your installed apps (optionally including system apps), with
 detailed version information.
-
-<a href='https://play.google.com/store/apps/details?id=org.fbluemle.android.appmatrix'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width='200'/></a>
 
 <img src="docs/screenshot01.png" width="320">
 <img src="docs/screenshot02.png" width="320">
@@ -36,3 +34,8 @@ synced to the user's Google account.
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
+
+[1]: https://travis-ci.org/friederbluemle/appmatrix.svg?branch=master
+[2]: https://travis-ci.org/friederbluemle/appmatrix
+[3]: https://coveralls.io/repos/github/friederbluemle/appmatrix/badge.svg?branch=master
+[4]: https://coveralls.io/github/friederbluemle/appmatrix?branch=master
