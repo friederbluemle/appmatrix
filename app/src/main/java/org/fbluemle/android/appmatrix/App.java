@@ -5,6 +5,10 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.StringBuilderPrinter;
 
+import com.crashlytics.android.Crashlytics;
+
+import io.fabric.sdk.android.Fabric;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.text.DateFormat;
@@ -20,6 +24,8 @@ public class App extends Application {
         super.onCreate();
 
         Log.i(TAG, new String(getDebugInfo(BuildConfig.DEBUG).toByteArray()));
+
+        Fabric.with(this, new Crashlytics());
     }
 
     public ByteArrayOutputStream getDebugInfo(boolean verbose) {
