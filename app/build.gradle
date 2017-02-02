@@ -69,4 +69,13 @@ android {
 dependencies {
     compile 'com.android.support:appcompat-v7:25.1.1'
     compile 'com.android.support:design:25.1.1'
+    compile 'com.google.firebase:firebase-core:10.0.1'
+}
+
+if (file('google-services.json').exists() ||
+        file('src/debug/google-services.json').exists() ||
+        file('src/release/google-services.json').exists()) {
+    apply plugin: 'com.google.gms.google-services'
+} else {
+    logger.warn('File google-services.json is missing. Google Services/Firebase will be unavailable.')
 }

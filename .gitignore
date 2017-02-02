@@ -14,3 +14,6 @@ local.properties
 
 # Release signing properties
 release.properties
+
+# Android
+google-services.json
