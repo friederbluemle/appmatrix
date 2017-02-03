@@ -138,6 +138,14 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
+        if (BuildConfig.DEBUG) {
+            // Add Debug entry on all activities except DebugActivity itself
+            if (!"DebugActivity".equals(getClass().getSimpleName())) {
+                menu.add(0, menu.size(), 999, "Debug");
+            }
+        }
+
         return true;
     }
 
@@ -156,6 +164,14 @@ public class MainActivity extends AppCompatActivity {
         } else if (id == R.id.action_about) {
             showAboutDialog();
         }
+
+        if (BuildConfig.DEBUG) {
+            if ("Debug".equals(item.getTitle())) {
+                startActivity(new Intent(this, DebugActivity.class));
+                return true;
+            }
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

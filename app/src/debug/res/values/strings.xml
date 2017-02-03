@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">AppMatrix Debug</string>
+    <string name="debug_app_id">App ID</string>
+    <string name="debug_kill_app_process">Kill app process</string>
+    <string name="debug_crash_app">Crash App</string>
+    <string name="debug_killing_app_in_3_seconds">Killing app in 3 seconds…</string>
 </resources>
