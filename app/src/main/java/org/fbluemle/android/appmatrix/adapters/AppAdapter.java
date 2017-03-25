@@ -4,6 +4,9 @@ import org.fbluemle.android.appmatrix.R;
 import org.fbluemle.android.appmatrix.models.AppInfo;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -18,11 +21,13 @@ import java.util.List;
 
 public class AppAdapter extends ArrayAdapter<AppInfo> {
     private final LayoutInflater mLayoutInflater;
+    private final PackageManager mPackageManager;
     private final List<AppInfo> mApps;
 
     public AppAdapter(Context context, List<AppInfo> apps) {
         super(context, R.layout.app_list_item, apps);
         mLayoutInflater = LayoutInflater.from(context);
+        mPackageManager = context.getPackageManager();
         mApps = apps;
     }
 
@@ -36,28 +41,29 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
             view = mLayoutInflater.inflate(R.layout.app_list_item, parent, false);
         }
 
-        if (!TextUtils.isEmpty(current.versionName) && current.versionCode != 0) {
-            String versionInfo = String.format("%s (%s)", current.versionName, current.versionCode);
-            ((TextView) view.findViewById(R.id.appVersion)).setText(versionInfo);
-        }
-
         ((TextView) view.findViewById(R.id.title)).setText(current.label);
 
-        if (!TextUtils.isEmpty(current.packageName)) {
+        try {
+            PackageInfo pi = mPackageManager.getPackageInfo(current.info.packageName, 0);
+            if (!TextUtils.isEmpty(pi.versionName)) {
+                String versionInfo = String.format("%s", pi.versionName);
+                ((TextView) view.findViewById(R.id.appVersion)).setText(versionInfo);
+            }
+        } catch (PackageManager.NameNotFoundException ignored) {
+        }
+
+        if (!TextUtils.isEmpty(current.info.packageName)) {
             TextView subTitle = (TextView) view.findViewById(R.id.subTitle);
-            subTitle.setText(current.packageName);
+            subTitle.setText(current.info.packageName);
         }
 
         ImageView logo = (ImageView) view.findViewById(R.id.icon);
-        if (current.icon != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                logo.setBackground(current.icon);
-            } else {
-                //noinspection deprecation
-                logo.setBackgroundDrawable(current.icon);
-            }
+        Drawable background = current.info.loadIcon(mPackageManager);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            logo.setBackground(background);
         } else {
-            logo.setImageResource(R.mipmap.ic_launcher);
+            //noinspection deprecation
+            logo.setBackgroundDrawable(background);
         }
 
         return view;

@@ -7,7 +7,6 @@ import org.fbluemle.android.appmatrix.models.AppInfo;
 
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,7 +17,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.util.Linkify;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,13 +27,13 @@ import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
-
     protected ListView mList;
     private boolean mIncludeSystemApps;
 
@@ -65,13 +63,13 @@ public class MainActivity extends AppCompatActivity {
         mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                AppInfo appInfo = (AppInfo) parent.getItemAtPosition(position);
-                Intent intent = getPackageManager().getLaunchIntentForPackage(appInfo.packageName);
+                AppInfo app = (AppInfo) parent.getItemAtPosition(position);
+                Intent intent = getPackageManager().getLaunchIntentForPackage(app.info.packageName);
                 if (intent != null) {
                     startActivity(intent);
                 } else {
                     Toast.makeText(getApplicationContext(),
-                            "No launch intent for " + appInfo.packageName, Toast.LENGTH_SHORT).show();
+                            "No launch intent for " + app.info.packageName, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -87,51 +85,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void refreshAppInfoList() {
         new LoadAppInfoTask().execute(PackageManager.GET_META_DATA);
-    }
-
-    private class LoadAppInfoTask extends AsyncTask<Integer, Integer, List<AppInfo>> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mSwipeRefreshLayout.setRefreshing(true);
-        }
-
-        @Override
-        protected List<AppInfo> doInBackground(Integer... params) {
-            List<AppInfo> apps = new ArrayList<>();
-
-            PackageManager pm = getPackageManager();
-            List<ApplicationInfo> appInfos = pm.getInstalledApplications(params[0]);
-            Collections.sort(appInfos, new ApplicationInfo.DisplayNameComparator(pm));
-
-            for (ApplicationInfo appInfo : appInfos) {
-                if (!mIncludeSystemApps && (appInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 1) {
-                    continue;
-                }
-                AppInfo app = new AppInfo((String) appInfo.loadLabel(pm));
-                app.packageName = appInfo.packageName;
-                app.targetSdkVersion = appInfo.targetSdkVersion;
-                app.icon = appInfo.loadIcon(pm);
-                try {
-                    PackageInfo pi = pm.getPackageInfo(appInfo.packageName, 0);
-                    app.versionCode = pi.versionCode;
-                    app.versionName = pi.versionName;
-                } catch (PackageManager.NameNotFoundException e) {
-                    Log.e(TAG, "Unable to get packageInfo for " + appInfo.packageName);
-                }
-                apps.add(app);
-            }
-            return apps;
-        }
-
-        @Override
-        protected void onPostExecute(List<AppInfo> appInfos) {
-            super.onPostExecute(appInfos);
-            mList.setAdapter(new AppAdapter(MainActivity.this, appInfos));
-            mSwipeRefreshLayout.setRefreshing(false);
-            Snackbar.make(mList, appInfos.size() + " applications loaded", Snackbar.LENGTH_SHORT)
-                    .show();
-        }
     }
 
     @Override
@@ -187,5 +140,57 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton(android.R.string.ok, null)
                 .setView(view)
                 .show();
+    }
+
+    private class LoadAppInfoTask extends AsyncTask<Integer, Integer, List<AppInfo>> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mSwipeRefreshLayout.setRefreshing(true);
+        }
+
+        @Override
+        protected List<AppInfo> doInBackground(Integer... params) {
+            List<AppInfo> apps = new ArrayList<>();
+
+            PackageManager pm = getPackageManager();
+            List<ApplicationInfo> infos = pm.getInstalledApplications(params[0]);
+
+            for (ApplicationInfo info : infos) {
+                if (!mIncludeSystemApps && (info.flags & ApplicationInfo.FLAG_SYSTEM) == 1) {
+                    continue;
+                }
+                AppInfo app = new AppInfo();
+                app.info = info;
+                app.label = (String) info.loadLabel(pm);
+                apps.add(app);
+            }
+            Collections.sort(apps, new DisplayNameComparator());
+            return apps;
+        }
+
+        @Override
+        protected void onPostExecute(List<AppInfo> appInfos) {
+            super.onPostExecute(appInfos);
+            mList.setAdapter(new AppAdapter(MainActivity.this, appInfos));
+            mSwipeRefreshLayout.setRefreshing(false);
+            Snackbar.make(mList, appInfos.size() + " applications loaded", Snackbar.LENGTH_SHORT)
+                    .show();
+        }
+
+        class DisplayNameComparator implements Comparator<AppInfo> {
+            public final int compare(AppInfo aa, AppInfo ab) {
+                CharSequence sa = aa.label;
+                if (sa == null) {
+                    sa = aa.info.packageName;
+                }
+                CharSequence sb = ab.label;
+                if (sb == null) {
+                    sb = ab.info.packageName;
+                }
+
+                return Collator.getInstance().compare(sa.toString(), sb.toString());
+            }
+        }
     }
 }

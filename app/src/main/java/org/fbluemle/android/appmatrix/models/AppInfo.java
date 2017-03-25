@@ -1,16 +1,8 @@
 package org.fbluemle.android.appmatrix.models;
 
-import android.graphics.drawable.Drawable;
+import android.content.pm.ApplicationInfo;
 
 public class AppInfo {
+    public ApplicationInfo info;
     public String label;
-    public String packageName;
-    public String versionName;
-    public int versionCode;
-    public int targetSdkVersion;
-    public Drawable icon;
-
-    public AppInfo(String label) {
-        this.label = label;
-    }
 }
