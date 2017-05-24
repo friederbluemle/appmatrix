@@ -1,5 +1,7 @@
 # AppMatrix
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/7dfca5ea271c44df89411bffb41b6b56)](https://www.codacy.com/app/friederbluemle/appmatrix?utm_source=github.com&utm_medium=referral&utm_content=friederbluemle/appmatrix&utm_campaign=badger)
+
 [![Build Status][1]][2]
 [![Coverage Status][3]][4]
 
