@@ -2,6 +2,7 @@
 
 [![Build Status][1]][2]
 [![Coverage Status][3]][4]
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/7dfca5ea271c44df89411bffb41b6b56)](https://www.codacy.com/app/friederbluemle/appmatrix?utm_source=github.com&utm_medium=referral&utm_content=friederbluemle/appmatrix&utm_campaign=badger)
 
 <a href='https://play.google.com/store/apps/details?id=org.fbluemle.android.appmatrix'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width='200'/></a>
 
